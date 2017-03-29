@@ -29,12 +29,13 @@ function draw(geo_data) {
         function flights(data) {
           debugger;
           svg.selectAll("circle")
-             .data([[data["lat"],data["long"]]]).enter()
+             .data(data)
+             .enter()
              .append("circle")
-             .attr("cx", function(d){return projection(d)[0]})
-             .attr("cy", function(d){return projection(d)[1]})
+             .attr("cx", function(d){return d["origin_lat"]})
+             .attr("cy", function(d){return d["origin_long"]})
              .attr("r", "8px")
              .attr("fill", "red");
         };
-        d3.json("../Data/airports.json", flights)
+        d3.json("Data/1987_sample.json", flights)
     };
