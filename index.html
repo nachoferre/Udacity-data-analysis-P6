@@ -1,7 +1,20 @@
+<!DOCTYPE html>
+<html>
 <head>
-    <link rel="stylesheet" href="css/style.css" />
-    <script src="js/graph.js"></script>
-</head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/graph.js"></script>
+
+    
 <body>
 <h1> Understanding the PISA results</h1>
+  <script type="text/javascript">
+  /*
+    Use D3 to load the GeoJSON file
+    */
+    
+d3.json("world_countries.json", draw);
+  </script>
 </body>
+</html>
