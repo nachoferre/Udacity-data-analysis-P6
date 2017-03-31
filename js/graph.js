@@ -8,44 +8,45 @@ function draw(geo_data) {
         var svg = d3.select("body")
             .append("svg")
             .attr("width", width + margin)
-            .attr("height", height + margin)
-            .append('g')
-            .attr('class', 'map');
+            .attr("height", height + margin);
 
-        var projection = d3.geo.mercator()
-                               .scale(140)
-                               .translate([width / 2, height / 1.2]);
+        var path = d3.geoPath();
 
-        var path = d3.geo.path().projection(projection);
+         svg.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.feature(geo_data, geo_data.objects.states).features)
+            .enter().append("path")
+            .attr("d", path)
+            .style("fill", "#ddc");
+        svg.append("path")
+            .attr("class", "state-borders")
+            .attr("d", path(topojson.mesh(geo_data, geo_data.objects.states, function(a, b) { return a !== b; })))
+            .style("stroke", "grey");
 
-        var map = svg.selectAll('path')
-                     .data(geo_data.features)
-                     .enter()
-                     .append('path')
-                     .attr('d', path)
-                     .style('fill', '#ddc')
-                     .style('stroke', 'black')
-                     .style('stroke-width', 0.5);
         function flights(data) {
-          function update(leaves){
-              var coords = leaves.map(function(d) {
-                    return projection([d["origin_long"], d["origin_lat"]]);
-                });
-              debugger;
-              return coords
-          }
-          var data_update = d3.nest()
-                              .rollup(update)
-                              .entries(data);
-          debugger;
+          // function origin_coords(leaves){
+          //     var coords = leaves.map(function(d) {
+          //           return projection([d["origin_long"], d["origin_lat"]]);
+          //       });
+          //     debugger;
+          //     return coords
+          // }
+          // var data_update_ori = d3.nest()
+          //                     .rollup(origin_coords)
+          //                     .entries(data);
+          //TODO PORJECT POINTS
           svg.selectAll("circle")
-             .data(data_update)
+             .data(data)
              .enter()
              .append("circle")
-             .attr("cx", function(d){return d[0]})
-             .attr("cy", function(d){return d[1]})
-             .attr("r", "8px")
+             .attr("cx", function(d){return d["origin_long"]})
+             .attr("cy", function(d){return d["origin_lat"]})
+             .attr("r", "2px")
              .attr("fill", "red");
+
+
+          
         };
         d3.json("Data/1987_sample.json", flights)
     };
