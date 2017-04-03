@@ -10,11 +10,11 @@ function draw(geo_data) {
             .attr("width", width + margin)
             .attr("height", height + margin);
 
-        var projection = d3.geoMercator()
+        var projection = d3.geo.mercator()
                                .scale(140)
                                .translate([width / 2, height / 1.2]);
 
-        var path = d3.geoPath().projection(projection);
+        var path = d3.geo.path().projection(projection);
 
         var map = svg.selectAll('path')
                      .data(geo_data.features)
@@ -24,30 +24,7 @@ function draw(geo_data) {
                      .style('fill', 'lightBlue')
                      .style('stroke', 'black')
                      .style('stroke-width', 0.5);
-        // function flights(data) {
-        //   function origin_coords(leaves){
-        //     return leaves.map(function(d) {
-        //       return projection([d["origin_long"], d["origin_lat"]]);
-        //     })
-        //   }
-        //   var data_update_ori = d3.nest()
-        //                       .rollup(origin_coords)
-        //                       .entries(data);
-        //   //TODO PORJECT POINTS
-        //   svg.selectAll("circle")
-        //      .data(data_update_ori)
-        //      .enter()
-        //      .append("circle")
-        //      .attr("cx", function(d){
-        //         console.log(d)
-        //         // debugger;
-        //         return d[0]
-        //       })
-        //      .attr("cy", function(d){return d[1]})
-        //      .attr("r", "2px")
-        //      .attr("fill", "red")
-        // }
-        // d3.json("Data/1987_sample.json", flights)
+        
 
       d3.json("Data/1987_sample.json", function(error, data) {
         if (error) throw error;
@@ -58,21 +35,30 @@ function draw(geo_data) {
           return [d["origin_long"], d["origin_lat"]]
         }))
 
-        // svg.selectAll("circle")
-        //    .data(_.map(data, (d, i) => {
-        //       return [d["origin_long"], d["origin_lat"], d["dest_long"], d["dest_lat"]]
-        //     }))
-        //    .enter()
-        //    .append("circle")
-        //    .attr("cx", function(d){
-        //       // console.log(projection(d))
-        //       return projection(d)[0]
-        //     })
-        //    .attr("cy", function(d){
-        //       return projection(d)[1]
-        //     })
-        //    .attr("r", "2px")
-        //    .attr("fill", "red")
+        var lineTransition = function lineTransition(path) {
+            path.transition()
+                //NOTE: Change this number (in ms) to make lines draw faster or slower
+                .duration(5500)
+                .attrTween("stroke-dasharray", tweenDash)
+                .each("end", function(d,i) { 
+                    ////Uncomment following line to re-transition
+                    //d3.select(this).call(transition); 
+                    
+                    //We might want to do stuff when the line reaches the target,
+                    //  like start the pulsating or add a new point or tell the
+                    //  NSA to listen to this guy's phone calls
+                    //doStuffWhenLineFinishes(d,i);
+                });
+        };
+        var tweenDash = function tweenDash() {
+            //This function is used to animate the dash-array property, which is a
+            //  nice hack that gives us animation along some arbitrary path (in this
+            //  case, makes it look like a line is being drawn from point A to B)
+            var len = this.getTotalLength(),
+                interpolate = d3.interpolateString("0," + len, len + "," + len);
+
+            return function(t) { return interpolate(t); };
+        };
         var origin = data.map(function(d) {
                     return projection([+d["origin_long"], +d["origin_lat"]]);
                 });
@@ -87,26 +73,23 @@ function draw(geo_data) {
             links.push({
                 type: "LineString",
                 coordinates: [
-                    [ origin[i][0], origin[i][1] ],
+                    [ origin[i][0], origin[i][1]],
                     [ destination[i][0], destination[i][1] ]
                 ]
             });
         }
         debugger;
-        var PathArcs = svg.append('g')
-                          .append('g')
+        var pathArcs = svg.append('g')
                           .selectAll('.arc')
                           .data(links)
-           PathArcs.enter()
-                   .append('path')
-                   .attr({'class': 'arc'})
-                   .style({ 
-                      fill: 'none',
-                    })
-           PathArcs.attr('d', path)
-                   .style({
-                        stroke: '#0000ff',
-                        'stroke-width': '2px'
-                    })
+                          .enter()
+                          .append('path')
+                          .attr('d', path)
+                          .style({
+                              stroke: '#0000ff',
+                              'stroke-width': '2px'})
+                          .call(lineTransition)
+        debugger;
+                   
       })
     };
