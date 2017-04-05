@@ -35,3 +35,22 @@ path.link {
   stroke: blue;
   stroke-width: 3px;
 }
+div.origins_buttons {
+        position: fixed;
+        top: 5px;
+        left: 50px;
+        width: 70px;
+      }
+
+div.origins_buttons div {
+  background-color: rgb(251, 201, 127);
+  padding: 3px;
+  margin: 7px;
+}
+svg{
+  margin: auto;
+}
+.background {
+  fill: none;
+  pointer-events: all;
+}

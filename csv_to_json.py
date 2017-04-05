@@ -12,14 +12,16 @@ for row in reader:
 			row[elem] = 0
 	for key in data:
 		if key["iata"] == row["Origin"]:
-			row["origin_lat"] = int(key["lat"])
-			row["origin_long"] = int(key["long"])
+			row["origin_lat"] = float(key["lat"])
+			row["origin_long"] = float(key["long"])
 		if key["iata"] == row["Dest"]:
-			row["dest_lat"] = int(key["lat"])
-			row["dest_long"] = int(key["long"])
+			row["dest_lat"] = float(key["lat"])
+			row["dest_long"] = float(key["long"])
 	d.append(row)
 	
-with open(file+".json", 'w') as fd:
-	json.dump(d, fd)
+with open(file+".csv", 'w') as fd:
+	writer = csv.DictReader(fd, fieldnames= d[0].keys())
+	writer.writeheader()
+	writer.writerows(d)
 		
 print "finished"
