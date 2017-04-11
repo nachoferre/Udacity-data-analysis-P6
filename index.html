@@ -6,15 +6,24 @@
   <script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
   <script src="js/graph.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
 <body>
-  <h1> Understanding the PISA results</h1>
   <script type="text/javascript">
     /*
       Use D3 to load the GeoJSON file
     */
     d3.json("Data/world_countries.json", draw)
   </script>
+  <div class="container" id="map-container">
+	  <div class="row">
+	  	<div class="col col-centered" id="mapper">
+	  		<h1>Departure delays in 1987 flights</h1>
+	  		<p><span id="green">green</span>-No delay   <span id="yellow">yellow</span>-Delay under 15    <span id="orange">orange</span>-Delay under 30    <span id="red">red</span>-Delay over 30</p>
+	  	</div>
+	  </div>
+  </div>
 </body>
 </html>

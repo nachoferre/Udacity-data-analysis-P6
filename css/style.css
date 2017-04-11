@@ -1,5 +1,4 @@
 h1{
-  text-align: center;
   color: black;
 }
 
@@ -35,22 +34,25 @@ path.link {
   stroke: blue;
   stroke-width: 3px;
 }
-div.origins_buttons {
-        position: fixed;
-        top: 5px;
-        left: 50px;
-        width: 70px;
-      }
 
-div.origins_buttons div {
-  background-color: rgb(251, 201, 127);
-  padding: 3px;
-  margin: 7px;
-}
 svg{
-  margin: auto;
+  border: 4px solid grey;
+  box-sizing: border-box;
 }
 .background {
   fill: none;
   pointer-events: all;
+}
+
+#green{
+  color: green
+}
+#yellow{
+  color: yellow
+}
+#orange{
+  color: orange 
+}
+#red{
+  color: red  
 }
