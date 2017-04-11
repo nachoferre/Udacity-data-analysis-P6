@@ -9,7 +9,7 @@ This visualization hopes to ilustrate the delays occurred in a random sample of 
 First I started using only th us map, however I was told that the visualization was off and that there were some flights outside the us, so I decided to use the world map.
 Once I was using the world map some people found difficult to easily see the flight patterns so i decided to implement the zoom feature.
 During the capture of feedback a colleage found an error in the coordinates for the Guam airport. I corrected the issue in the data.
-Finally I added the color coded feature to be able to distinguish the different delays.
+Finally I added the color coded feature to be able to distinguish the different delays. I have enhanced the data with the coordinates of every airport as well as changed it to json file. The one I have worked with is 1987_sample.json
 
 ## Feedback
 One colleage saw easily an error in the data found the visualization helpful
