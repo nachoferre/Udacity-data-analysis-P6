@@ -6,12 +6,20 @@ with open("Data/1987_sample.json") as fd:
 	data = json.load(fd)
 	aux = []
 	for air in data:
-		# aux.append(air["Origin"])
-		if air["origin_long"] == -144.7959825:
-			air["origin_long"] = abs(air["origin_long"])
+		if int(air["DepDelay"]) <= 0:
+			air["range"]= "green"
+		elif int(air["DepDelay"]) <= 15:
+			air["range"]= "yellow"
+		elif int(air["DepDelay"]) <= 30:
+			air["range"]= "orange"
+		else:
+			air["range"]= "red"
+		# # aux.append(air["Origin"])
+		# if air["origin_long"] == -144.7959825:
+		# 	air["origin_long"] = abs(air["origin_long"])
 			
-		if air["dest_long"] == -144.7959825:
-			air["dest_long"] = abs(air["dest_long"])
+		# if air["dest_long"] == -144.7959825:
+		# 	air["dest_long"] = abs(air["dest_long"])
 	# output = random.sample(data, 100000)
 	# output = data[:10000]
 	# for elem in data:

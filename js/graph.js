@@ -11,6 +11,12 @@ function draw(geo_data) {
             .attr("width", width + margin)
             .attr("height", height + margin)
             .append("g");
+        
+        d3.select("#mapper")
+          .append("h4")
+          .attr("id", "airport-info")
+          .text("All airports");
+
       /*Preapre the projection for the map*/
         var projection = d3.geo.mercator()
                                .scale(100)
@@ -44,8 +50,40 @@ function draw(geo_data) {
       d3.json("Data/1987_sample.json", function(error, data) {
         if (error) throw error;
 
-        /*create the list with all the airports, so we can create the buttons*/
-        var origins = ["JFK", "GSP", "FNT", "SIT", "MIA", "BOS", "OAK", "BGM", "CCR", "LIT", "BOI", "BGR", "YUM", "DRO", "CPR", "AGS", "GSO", "SAN", "PIA", "MYR", "BTM", "DCA", "LBB", "HSV", "GRB", "SPN", "BWI", "PIT", "SAV", "SAT", "CHA", "ILM", "IAH", "TPA", "ALO", "IAD", "BFL", "JAN", "HRL", "CHS", "EYW", "WRG", "GPT", "BNA", "JAC", "LAN", "ITH", "JNU", "PHL", "SNA", "PHF", "BIS", "SYR", "PHX", "LAX", "MAF", "MBS", "APF", "LAS", "CRP", "CRW", "CMI", "CMH", "LMT", "GJT", "GUM", "FLL", "DEN", "SMF", "HDN", "DTW", "EVV", "LSE", "MFE", "SCK", "SFO", "BUR", "ROA", "ROC", "SCC", "MFR", "GEG", "LIH", "ROR", "IDA", "BUF", "ANC", "TRI", "GRR", "SHV", "BDL", "CSG", "DLH", "YKM", "GCN", "ORF", "DSM", "BLI", "EWR", "MHT", "PBI", "BTV", "RNO", "RAP", "BTR", "PSC", "FOE", "AVP", "PSG", "MGM", "MOT", "AVL", "HLN", "OKC", "HTS", "IND", "MOB", "PSP", "TYS", "ILG", "COS", "FSD", "ATL", "ISP", "HNL", "PIE", "ATW", "ISO", "ACV", "LFT", "BZN", "SUX", "FWA", "CID", "TVL", "PVD", "SEA", "ICT", "OAJ", "MDW", "MDT", "RDU", "LNK", "GTF", "PDX", "CLE", "DFW", "YAP", "SJU", "RDD", "AUS", "SRQ", "YAK", "CLT", "SJC", "ELP", "TLH", "MSO", "OMA", "FAR", "OME", "BET", "MEM", "LYH", "TUS", "ALB", "PUB", "RIC", "CDV", "SBA", "TUL", "ORH", "LEX", "ORD", "SBN", "MKE", "GNV", "MSY", "AZO", "KOA", "MSP", "CAK", "MSN", "TOL", "CVG", "ERI", "CAE", "MRY", "BIL", "FAY", "RDM", "JAX", "DAB", "GFK", "DAL", "ELM", "OTZ", "FAT", "FAI", "FLG", "UCA", "EAU", "DAY", "ONT", "SGF", "MLB", "ABE", "STL", "MLI", "EUG", "FCA", "STT", "ABQ", "KTN", "HOU", "HPN", "MLU", "CWA", "CHO", "STX", "SLC", "MCO", "PWM", "BHM", "VPS", "MCI", "LGB", "PNS", "LGA", "PFN", "AMA", "SDF", "RST", "OGG", "RSW"]
+        /*create the nested variable being the key the airport of origin
+          We fill the nested variable with the coordinates of the departure and arrival and the delay caused by the departure airport*/
+        var nest = d3.nest().key(function(d){
+                                return d["Origin"]
+                              })
+                            .rollup(function(d){
+                                    return d.map(function(d){
+                                        return [[d["origin_long"], d["origin_lat"]],[d["dest_long"],d["dest_lat"]], d["DepDelay"], d["city"]]
+                                      })
+                                  })
+                            .entries(data)
+
+        for (var i = nest.length - 1; i >= 0; i--) {
+          var aux = 0
+          for (var j = nest[i].values.length - 1; j >= 0; j--) {
+            
+            if (+nest[i].values[j][2] <= 0){
+              aux = aux + 1
+            }
+          }
+          nest[i].ontime = aux
+        }
+        nest = nest.sort(function(a, b){
+            return b.ontime - a.ontime
+          })
+        
+        nest = nest.slice(0, 10)
+        
+        var origins = []
+        for (var i = nest.length - 1; i >= 0; i--) {
+          origins.push(nest[i].key)
+        }
+        
+         /*create the list with all the airports, so we can create the buttons*/
         /*create the buttons inside the specified container*/
         var buttons = d3.select("#map-container")
                         .append("div")
@@ -60,26 +98,19 @@ function draw(geo_data) {
                         .text(function(d) {
                             return d;
                         });
-        /*create the nested variable being the key the airport of origin
-          We fill the nested variable with the coordinates of the departure and arrival and the delay caused by the departure airport*/
-        var nest = d3.nest().key(function(d){
-                                return d["Origin"]
-                              })
-                            .rollup(function(d){
-                                    return d.map(function(d){
-                                        return [[d["origin_long"], d["origin_lat"]],[d["dest_long"],d["dest_lat"]], +d["DepDelay"]]
-                                      })
-                                  })
-                            .entries(data)
-        console.log(nest)
         /*function for the dynamic update of the map*/
         function update(origin) {
+          
           /*fisrt we filter the nest variable, only getting the airport the user clicked*/
             var filtered = nest.filter(function(d) {
                     return d["key"] === origin;
                     
                 });
-
+            
+            var percentage = (filtered[0].ontime / (filtered[0].values.length - 1))*100
+            percentage = percentage.toFixed(2)
+            d3.select("#airport-info")
+            .text("Airport of " + filtered[0].values[0][3] + ". It had " + percentage.toString() + "% of flights on time");
             var links = [];
             /*we create the list of dictionaries with the type specified as a Linestring, also we add the color so we can distinguish the different delays*/
             for(var i=0, len=filtered[0].values.length-1; i<len; i++){
@@ -89,15 +120,18 @@ function draw(geo_data) {
                         [filtered[0].values[i][0][0],filtered[0].values[i][0][1]],
                         [filtered[0].values[i][1][0],filtered[0].values[i][1][1]]
                     ],
-                    color: filtered[0].values[i][2]
+                    color: filtered[0].values[i][2],
+                    city: filtered[0].values[i][3]
                 });
             }
+            /*remove the selected linestrings*/
+            svg.selectAll('g').remove()
             /*select all the previous linestrings*/
-            var paths = svg.select("g")
+            var paths = svg.append("g")
                            .selectAll("path")
                            .data(links)
-            /*remvode the selected linestrings*/
-            paths.exit().remove()
+            
+            
             /*Finally we insert the new linestrings color coded*/
             paths.enter()
                  .append('path')
@@ -129,7 +163,8 @@ function draw(geo_data) {
                         [data[i][["origin_long"]],data[i][["origin_lat"]]],
                         [data[i]["dest_long"],data[i]["dest_lat"]]
                     ],
-                    color: +data[i]["DepDelay"]
+                    color: +data[i]["DepDelay"],
+                    city: data[i]["city"]
                 });
             }
             /*we insert the new linestrings color coded*/

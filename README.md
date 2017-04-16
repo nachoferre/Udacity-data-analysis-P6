@@ -12,9 +12,16 @@ During the capture of feedback a colleage found an error in the coordinates for 
 Finally I added the color coded feature to be able to distinguish the different delays. I have enhanced the data with the coordinates of every airport as well as changed it to json file. The one I have worked with is 1987_sample.json
 
 ## Feedback
-One colleage saw easily an error in the data found the visualization helpful
-There was some feedback that helped me shape the map and set the placing of the buttons where it is, because as we remeber the buttons created by d3 natively are positioned and formatted differently.
-The rest of the feedback was positive.
+"The map is beautiful, but there seems to be some points leading to the sea"
+This feedback helped me find an error in the input data and fixed it so the coordinates of the Guam airport are correct
+"The map seems good but see the flight lines is quite difficult in a map that big"
+This feedback made me try to find new ways of seeing or focusing on the data, and that is why I implemented the zoom feature.
+"The map looks great but the buttons seem to be misplaced in the middle of the page, and it would be great if there were a limit between the map and the rest of the page"
+This feedback that helped me shape the map and set the placing of the buttons where it is, because as we remeber the buttons created by d3 natively are positioned and formatted differently. Also I set the frame around the map so it can be more confortable to the eye.
+
+## Readers Summary
+
+
 
 ## Resources
 
