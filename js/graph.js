@@ -108,6 +108,7 @@ function draw(geo_data) {
          .text(function (d) {
             return d;
          });
+
       /*function for the dynamic update of the map*/
       function update(origin) {
 
@@ -193,25 +194,25 @@ function draw(geo_data) {
          });
       }
       /*we insert the new linestrings color coded*/
-      var paths = svg.append('g')
-         .selectAll('path')
-         .data(links)
-         .enter()
-         .append('path')
-         .attr('d', path)
-         .style("stroke", function (d) {
-            if (d.color <= 0) {
-               return "green"
-            } else if (d.color <= 15) {
-               return "yellow"
-            } else if (d.color <= 30) {
-               return "orange"
-            } else {
-               return "red"
-            }
-         }).style({
-            'stroke-width': 2
-         })
+      // var paths = svg.append('g')
+      //    .selectAll('path')
+      //    .data(links)
+      //    .enter()
+      //    .append('path')
+      //    .attr('d', path)
+      //    .style("stroke", function (d) {
+      //       if (d.color <= 0) {
+      //          return "green"
+      //       } else if (d.color <= 15) {
+      //          return "yellow"
+      //       } else if (d.color <= 30) {
+      //          return "orange"
+      //       } else {
+      //          return "red"
+      //       }
+      //    }).style({
+      //       'stroke-width': 2
+      //    })
          /*we create the behaviour of the buttons */
       buttons.on("click", function (d) {
          d3.select(".origins_buttons")
