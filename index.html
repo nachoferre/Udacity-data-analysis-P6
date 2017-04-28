@@ -15,16 +15,15 @@
     /*
       Use D3 to load the GeoJSON file
     */
-    d3.json("Data/world_countries.json", draw)
+    d3.json("Data/US.json", draw)
   </script>
   <div class="container" id="map-container">
 	  <div class="row">
 	  	<div class="col col-centered" id="mapper">
 	  		<h1>Best airports to departure of the US in 1987</h1>
-	  		<p>Including territories like Guam and Puerto Rico</p>
 	  	</div>
 	  	<div class="col">
-	  		<h4><span id="green">green</span>-No delay   <span id="yellow">yellow</span>-Delay under 15    <span id="orange">orange</span>-Delay under 30    <span id="red">red</span>-Delay over 30</h4>
+	  		<h4>Range => <span id="red">Red</span> to <span id="green">Green</span> == Least efficient to Most efficient</h4>
 	  	</div>
 	  </div>
   </div>
