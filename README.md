@@ -37,3 +37,5 @@ http://bl.ocks.org/pere/3012590
 http://stackoverflow.com/questions/18493505/straight-lines-on-map-in-d3-js
 http://www.tnoda.com/blog/2014-04-02
 http://stackoverflow.com/questions/979256/sorting-an-array-of-javascript-objects
+http://stackoverflow.com/questions/7128675/from-green-to-red-color-depend-on-percentage
+http://bl.ocks.org/d3noob/5193723
