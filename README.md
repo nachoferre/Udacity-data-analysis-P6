@@ -3,13 +3,14 @@
 
 ## Summary
 
-This visualizations shows the 10 best airports to departure from the US in 1987. It offers a visual map of the different flight paths depending on the buttons you press. In addition it gives you the exact percentage of on-time flights for the selected airport.
+This visualizations shows the 10 best airports to departure from the US in 1987. It offers a bubble map of the 10 most efficient airports with a color code to understand each ones efficiency. In addition it gives you the exact percentage of on-time flights for the selected airport as well as the city for an easier understanding.
 
 ## Design
 First I started using only the us map, however I was told that the visualization was off and that there were some flights outside the us, so I decided to use the world map.
 Once I was using the world map some people found difficult to easily see the flight patterns so i decided to implement the zoom feature.
 During the capture of feedback a colleague found an error in the coordinates for the Guam airport. I corrected the issue in the data.
-Finally I added the color coded feature to be able to distinguish the different delays. I have enhanced the data with the coordinates of every airport as well as changed it to json file. The one I have worked with is 1987_sample.json
+Finally I added the color coded feature to be able to distinguish the different delays. I have enhanced the data with the coordinates of every airport as well as changed it to json file. The one I have worked with is 1987_sample.json.
+After the reviews I settled and went back to the US map and deleted the airports outside the US territory to avoid unwanted points. In addition I changed from a line-related map to a bubble map for an easier understanding and to be able to better differenciate one airport efficiency from another. 
 
 ## Feedback
 "The map is beautiful, but there seems to be some points leading to the sea"
